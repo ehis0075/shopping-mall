@@ -1,14 +1,13 @@
 package com.market.app.shoppingmall.models;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import net.minidev.json.annotate.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +17,21 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "product_id")
+    private Long productId;
 
+    @Column(name = "product_name")
     private String productName;
 
-    private ProductCategory category;
+
+    @Column(name = "product_category")
+    private ProductCategory productCategory;
+
+    @ManyToMany
+    @JoinTable(
+            name = "product_customers",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Customer> customers;
 
 }
